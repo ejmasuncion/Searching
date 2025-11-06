@@ -30,7 +30,7 @@ class HashTable:
         
         return hash_value % self.capacity
     
-    def put(self, key: str, value: int):
+    def insert(self, key: str, value: int):
         index = self._hash_function_1(key)
         chain = self.table[index]
         
@@ -42,7 +42,7 @@ class HashTable:
         
         chain.append((key, value))
         
-    def get(self, key: str) -> int:
+    def search(self, key: str):
         index = self._hash_function_1(key)
         chain = self.table[index]
         
