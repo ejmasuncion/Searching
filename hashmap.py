@@ -34,7 +34,7 @@ class HashTable:
         index = self._hash_function_1(key)
         chain = self.table[index]
         
-        ## for collitions
+        ## for collisions
         for i, (k, v) in enumerate(chain):
             if k == key:
                 chain[i] = (key, value)
