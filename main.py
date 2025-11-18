@@ -20,8 +20,6 @@ import searching as search
 # Using BST
 def main():
     dna_sequence = "taccaccaccatag"
-    # dna_sequence =   "cccccccccccccc"
-    # dna_sequence = "8109746523"
     k_size = 6
 
     print(f"DNA String (n={len(dna_sequence)}): {dna_sequence}")
@@ -30,11 +28,6 @@ def main():
     distribution_table = search.compute_kmer_distribution(dna_sequence, k_size)
 
     distribution_table.inorder_traversal()
-    # print("Root sequence: ",distribution_table.search("ccatag"))
-    # print("table size: ",distribution_table.size)
-    # for kmer, count in distribution_table.items():
-    #     print(f"  '{kmer}': {count}")
-
 
 if __name__ == "__main__":
     main()
