@@ -1,6 +1,6 @@
 import searching as search
 
-def main(search_function: str):
+def main(search_function: str, hash_func_key: str):
     dna_sequence = "taccaccaccatag"
     k_size = 6
 
@@ -8,7 +8,7 @@ def main(search_function: str):
     print(f"k-mer size: {k_size}")
 
     if search_function == 'HT':
-        distribution_table = search.compute_kmer_distribution_ht(dna_sequence, k_size)
+        distribution_table = search.compute_kmer_distribution_ht(dna_sequence, k_size, hash_func_key)
     
         print("Root sequence: ",distribution_table.search("accacc"))
         for kmer, count in distribution_table.items():
@@ -20,8 +20,9 @@ def main(search_function: str):
         distribution_table.inorder_traversal()
 
 if __name__ == "__main__":
-    search_function = 'HT'
-    main(search_function)
+    search_function = 'BST' # Options: 'HT' or 'BST'
+    hash_func_key='MMH3' # Options: 'MMH3' or 'FNV1A'
+    main(search_function, hash_func_key)
 
 
 

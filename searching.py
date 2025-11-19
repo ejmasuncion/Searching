@@ -1,9 +1,9 @@
 from hashmap import HashTable
 from bst import BST, TreeNode, K_Mer
 
-def compute_kmer_distribution_ht(dna_string: str, k: int) -> HashTable:
+def compute_kmer_distribution_ht(dna_string: str, k: int, hash_func_key: str) -> HashTable:
     n = len(dna_string)
-    kmer_counts = HashTable(capacity=n)
+    kmer_counts = HashTable(capacity=n, hash_function=hash_func_key)
 
     for i in range(n - k + 1):
         kmer = dna_string[i:i + k]
