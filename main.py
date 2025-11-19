@@ -20,7 +20,7 @@ def main(search_function: str):
         distribution_table.inorder_traversal()
 
 if __name__ == "__main__":
-    search_function = 'BST'
+    search_function = 'HT'
     main(search_function)
 
 

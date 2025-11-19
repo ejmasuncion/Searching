@@ -30,17 +30,21 @@ class HashTable:
         
         return hash_value % self.capacity
     
+    def _collision(self, chain: list, key: str, value: int) -> bool:
+        for i, (k, v) in enumerate(chain):
+            if k == key:
+                chain[i] = (key, value)
+                return True
+        return False
+    
     def insert(self, key: str, value: int):
         index = self._hash_function_1(key)
         chain = self.table[index]
         
-        ## for collisions
-        for i, (k, v) in enumerate(chain):
-            if k == key:
-                chain[i] = (key, value)
-                return
-        
-        chain.append((key, value))
+        was_updated = self._collision(chain, key, value)
+
+        if not was_updated:
+            chain.append((key, value))
         
     def search(self, key: str):
         index = self._hash_function_1(key)
