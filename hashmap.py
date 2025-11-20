@@ -56,9 +56,11 @@ class HashTable:
         index = self._hash_function(key)
         chain = self.table[index]
         
+        print(f"Inserting key: '{key}' with value: {value} at index: {index}")
         was_updated = self._collision(chain, key, value)
 
         if not was_updated:
+            print("Collision! inserting new key-value pair into hash table.")
             chain.append((key, value))
         
     def search(self, key: str):
@@ -72,6 +74,7 @@ class HashTable:
         return 0
     
     def items(self):
+        # To generate all key-value pairs in the hash table
         for chain in self.table:
             for key, value in chain:
                 yield key, value
