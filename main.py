@@ -100,15 +100,12 @@ def save_results_to_csv(csv_data: str, file_name: str):
         except Exception as e:
             print(f"❌ Error writing file: {e}. Please try a different filename or location.")
 
-def main(search_function: str, hash_func_key: str, sequence_length: int, k_size: int):
-    TEST_SEQUENCE_LENGTHS = [1000, 5000, 10000]
-    TEST_K_VALUES = [5, 10, 15]
-    dna_sequence = generate_random_dna(sequence_length)
-    k = k_size
-    file_name = 'performance_results.csv'
+def main(search_function: str, hash_func_key: str, file_name: str):
+    TEST_SEQUENCE_LENGTHS = [10000, 100000, 1000000]
+    TEST_K_VALUES = [5, 6, 7]
 
-    print(f"DNA String (n={len(dna_sequence)}): {dna_sequence}")
-    print(f"k-mer size: {k}")
+    print(f"DNA String (n={len(TEST_K_VALUES)}): {TEST_K_VALUES}")
+    print(f"k-mer size: {TEST_K_VALUES}")
 
     if search_function == 'HT':
         csv_results = run_performance_test_ht(TEST_SEQUENCE_LENGTHS, TEST_K_VALUES, hash_func_key)
@@ -125,9 +122,8 @@ def main(search_function: str, hash_func_key: str, sequence_length: int, k_size:
 if __name__ == "__main__":
     search_function = 'BST' # Options: 'HT' or 'BST'
     hash_func_key='N/A' # Options: 'MMH3' or 'FNV1A or N/A for BST'
-    sequence_length = 100
-    k = 5
-    main(search_function, hash_func_key, sequence_length, k)
+    file_name = "performance_results_bst.csv"
+    main(search_function, hash_func_key, file_name)
 
 
 
