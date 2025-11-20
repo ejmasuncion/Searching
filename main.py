@@ -7,6 +7,42 @@ DNA_BASES = ['a', 'c', 'g', 't']
 def generate_random_dna(length: int) -> str:
     return ''.join(random.choice(DNA_BASES) for _ in range(length))
 
+def run_performance_test_bst(sequence_lengths: list, k_values: list):
+    csv_output = "Search_Algo,Seq_Length_n,K_Size,Collision_Count,Execution_Time_sec\n"
+    
+    print(f"Starting performance test with BST Search: ")
+    print("--------------------------------------------------")
+
+    for n in sequence_lengths:
+        dna_sequence = generate_random_dna(n)
+        
+        for k in k_values:
+            if k >= n:
+                print(f"Skipping n={n}, k={k} (k must be less than n)")
+                continue
+            
+            start_time = time.time()
+            
+            distribution_table = search.compute_kmer_distribution_bst(dna_sequence, k)
+            
+            search_key = dna_sequence[:k]
+            search_iterations = 1000 
+            
+            for _ in range(search_iterations):
+                distribution_table.search(search_key)
+            
+            end_time = time.time()
+            
+            elapsed_time = end_time - start_time
+
+            collision_count = " "
+            
+            csv_output += f"'BST Search',{n},{k},{collision_count},{elapsed_time:.6f}\n"
+            
+            print(f"Finished n={n}, k={k}: {elapsed_time:.6f} sec")
+
+    return csv_output
+
 def run_performance_test_ht(sequence_lengths: list, k_values: list, hash_func_key: str):
     csv_output = "Hash_Algo,Seq_Length_n,K_Size,Collision_Count,Execution_Time_sec\n"
     
@@ -79,13 +115,16 @@ def main(search_function: str, hash_func_key: str, sequence_length: int, k_size:
         
         save_results_to_csv(csv_results, file_name)
 
+    elif search_function == 'BST':
+        csv_results = run_performance_test_bst(TEST_SEQUENCE_LENGTHS, TEST_K_VALUES)
+        
+        save_results_to_csv(csv_results, file_name)
     else:
-        distribution_table = search.compute_kmer_distribution_bst(dna_sequence, k)
-        distribution_table.inorder_traversal()
+        print(f"Unknown search function: {search_function}. Please choose 'HT' or 'BST'.")
 
 if __name__ == "__main__":
-    search_function = 'HT' # Options: 'HT' or 'BST'
-    hash_func_key='FNV1A' # Options: 'MMH3' or 'FNV1A'
+    search_function = 'BST' # Options: 'HT' or 'BST'
+    hash_func_key='N/A' # Options: 'MMH3' or 'FNV1A or N/A for BST'
     sequence_length = 100
     k = 5
     main(search_function, hash_func_key, sequence_length, k)
