@@ -7,6 +7,8 @@ class HashTable:
         self.table = []
         for i in range(capacity):
             self.table.append([])
+        
+        self.collision_count = 0
 
     def __repr__(self) -> str:
         output = f"<{self.__class__.__name__} Capacity={self.capacity} Algorithm={self.hash_function}>\n"
@@ -46,10 +48,16 @@ class HashTable:
     
     def _collision(self, chain: list, key: str, value: int) -> bool:
         ## seperate chaining collision resolution
+
+        comparisons_made = 0
         for i, (k, v) in enumerate(chain):
+            comparisons_made += 1
             if k == key:
+                self.collision_count += comparisons_made
                 chain[i] = (key, value)
                 return True
+        
+        self.collision_count += comparisons_made
         return False
     
     def insert(self, key: str, value: int):
