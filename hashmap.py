@@ -7,19 +7,27 @@ class HashTable:
         self.table = []
         for i in range(capacity):
             self.table.append([])
+
+    def __repr__(self) -> str:
+        output = f"<{self.__class__.__name__} Capacity={self.capacity} Algorithm={self.hash_function}>\n"
+        output += "--- Hash Table Array Structure (Index : Chain) ---\n"
+        
+        for i, chain in enumerate(self.table):
+            chain_str = ", ".join([f"('{k}': {v})" for k, v in chain])
+            
+            output += f"[{i:02d}]: [{chain_str}]\n"
+            
+        return output
     
     def _hash_function(self, key: str) -> int:
-        """
-        Calculates the array index by delegating to the selected hashing algorithm.
-        """
         if self.hash_function == 'MMH3':
-            # MurmurHash3_32 (Algorithm 1)
+            # MMH3
             data_bytes = key.encode('utf-8')
             hash_value = mmh3.hash(data_bytes, seed=0)
             hash_value = hash_value & 0xFFFFFFFF
             
         elif self.hash_function == 'FNV1A':
-            # FNV1a_32 (Algorithm 2)
+            # FNV1a_32
             FNV_OFFSET_BASIS = 2166136261
             FNV_PRIME = 16777619  
 
@@ -33,11 +41,11 @@ class HashTable:
         
         else:
             raise ValueError(f"Unknown hash algorithm: {self.hash_function}")
-
-        # The final modulo operation is performed once for both algorithms
+        
         return hash_value % self.capacity
     
     def _collision(self, chain: list, key: str, value: int) -> bool:
+        ## seperate chaining collision resolution
         for i, (k, v) in enumerate(chain):
             if k == key:
                 chain[i] = (key, value)
@@ -45,7 +53,6 @@ class HashTable:
         return False
     
     def insert(self, key: str, value: int):
-        # Calls the unified hash function
         index = self._hash_function(key)
         chain = self.table[index]
         
@@ -55,7 +62,6 @@ class HashTable:
             chain.append((key, value))
         
     def search(self, key: str):
-        # Calls the unified hash function
         index = self._hash_function(key)
         chain = self.table[index]
         

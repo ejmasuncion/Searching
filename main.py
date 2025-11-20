@@ -1,7 +1,7 @@
 import searching as search
 
 def main(search_function: str, hash_func_key: str):
-    dna_sequence = "taccaccaccatag"
+    dna_sequence = "taccaccaccatagataccaccaccataggccttaccaccacc"
     k_size = 6
 
     print(f"DNA String (n={len(dna_sequence)}): {dna_sequence}")
@@ -14,13 +14,15 @@ def main(search_function: str, hash_func_key: str):
         for kmer, count in distribution_table.items():
             print(f"  '{kmer}': {count}")
 
+        # print(distribution_table)
+
 
     else:
         distribution_table = search.compute_kmer_distribution_bst(dna_sequence, k_size)
         distribution_table.inorder_traversal()
 
 if __name__ == "__main__":
-    search_function = 'BST' # Options: 'HT' or 'BST'
+    search_function = 'HT' # Options: 'HT' or 'BST'
     hash_func_key='MMH3' # Options: 'MMH3' or 'FNV1A'
     main(search_function, hash_func_key)
 
