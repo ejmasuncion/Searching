@@ -1,0 +1,10 @@
+Search_Algo,Seq_Length_n,K_Size,Collision_Count,Execution_Time_sec
+'BST Search',10000,5, ,0.018682
+'BST Search',10000,6, ,0.023542
+'BST Search',10000,7, ,0.026028
+'BST Search',100000,5, ,0.172700
+'BST Search',100000,6, ,0.220170
+'BST Search',100000,7, ,0.274770
+'BST Search',1000000,5, ,1.908162
+'BST Search',1000000,6, ,2.297112
+'BST Search',1000000,7, ,2.973940

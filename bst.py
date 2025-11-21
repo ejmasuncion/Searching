@@ -34,23 +34,23 @@ class BST:
 
         if (node is None ):
             self.size += 1
-            print(f"Inserting new node {key}")
-            print(f"------------------------")
+            # print(f"Inserting new node {key}")
+            # print(f"------------------------")
             return TreeNode(K_Mer(key, new_count))
 
-        print(f"Comparing {node.val.sequence} to {key}...")
+        # print(f"Comparing {node.val.sequence} to {key}...")
         if (node.val.sequence == key):
             node.val.count += 1
-            print(f"Increasing {key} to {node.val.count}")
-            print(f"------------------------")
+            # print(f"Increasing {key} to {node.val.count}")
+            # print(f"------------------------")
 
             return node
         
         if key < node.val.sequence:
-            print("going left")
+            # print("going left")
             node.left = self._insert_helper(node.left, key, new_count)
         elif key > node.val.sequence:
-            print("going right")
+            # print("going right")
             node.right = self._insert_helper(node.right, key, new_count)
 
         return node
