@@ -13,6 +13,8 @@ def run_performance_test_bst(sequence_lengths: list, k_values: list):
     print(f"Starting performance test with BST Search: ")
     print("--------------------------------------------------")
 
+    search_iterations = 1000
+
     for n in sequence_lengths:
         dna_sequence = generate_random_dna(n)
         
@@ -21,61 +23,75 @@ def run_performance_test_bst(sequence_lengths: list, k_values: list):
                 print(f"Skipping n={n}, k={k} (k must be less than n)")
                 continue
             
-            start_time = time.time()
+            start_time_insert = time.time()
             
             distribution_table = search.compute_kmer_distribution_bst(dna_sequence, k)
+
+            end_time_insert = time.time()
+            time_insert = end_time_insert - start_time_insert
+
+            start_time_search = time.time()
             
-            search_key = dna_sequence[:k]
-            search_iterations = 1000 
+            max_start_index = n - k
             
             for _ in range(search_iterations):
+                random_start = random.randint(0, max_start_index)
+                search_key = dna_sequence[random_start : random_start + k]
                 distribution_table.search(search_key)
             
-            end_time = time.time()
+            end_time_search = time.time()
             
-            elapsed_time = end_time - start_time
+            time_search = end_time_search - start_time_search
 
             collision_count = " "
             
-            csv_output += f"'BST Search',{n},{k},{collision_count},{elapsed_time:.6f}\n"
+            csv_output += f"'BST Search',{n},{k},{collision_count},{time_insert:.6f}, {time_search:.6f}\n"
             
-            print(f"Finished n={n}, k={k}: {elapsed_time:.6f} sec")
+            print(f"Finished n={n}, k={k}")
 
     return csv_output
 
 def run_performance_test_ht(sequence_lengths: list, k_values: list, hash_func_key: str):
-    csv_output = "Hash_Algo,Seq_Length_n,K_Size,Collision_Count,Execution_Time_sec\n"
+    csv_output = "Hash_Algo,Seq_Length_n,K_Size,Collision_Count,Insert_Table_Time_sec,Search_Time_sec\n"
     
     print(f"Starting performance test with Hash Algo: {hash_func_key}")
     print("--------------------------------------------------")
 
+    search_iterations = 1000
+
     for n in sequence_lengths:
         dna_sequence = generate_random_dna(n)
-        
+
         for k in k_values:
             if k >= n:
                 print(f"Skipping n={n}, k={k} (k must be less than n)")
                 continue
             
-            start_time = time.time()
+            start_time_insert = time.time()
             
             distribution_table = search.compute_kmer_distribution_ht(dna_sequence, k, hash_func_key)
+
+            end_time_insert = time.time()
+            time_insert = end_time_insert - start_time_insert
+
+            start_time_search = time.time()
             
-            search_key = dna_sequence[:k]
-            search_iterations = 1000 
+            max_start_index = n - k
             
             for _ in range(search_iterations):
+                random_start = random.randint(0, max_start_index)
+                search_key = dna_sequence[random_start : random_start + k]
                 distribution_table.search(search_key)
             
-            end_time = time.time()
+            end_time_search = time.time()
             
-            elapsed_time = end_time - start_time
+            time_search = end_time_search - start_time_search
 
             collision_count = distribution_table.collision_count
             
-            csv_output += f"{hash_func_key},{n},{k},{collision_count},{elapsed_time:.6f}\n"
+            csv_output += f"{hash_func_key},{n},{k},{collision_count},{time_insert:.6f}, {time_search:.6f}\n"
             
-            print(f"Finished n={n}, k={k}: {elapsed_time:.6f} sec")
+            print(f"Finished n={n}, k={k}")
 
     return csv_output
 
@@ -83,10 +99,6 @@ def save_results_to_csv(csv_data: str, file_name: str):
     while True:
         try:
             filename = file_name
-            
-            if not filename.strip():
-                print("Filename cannot be empty. Please try again.")
-                continue
 
             with open(filename, 'w') as f:
                 f.write(csv_data)
@@ -117,9 +129,9 @@ def main(search_function: str, hash_func_key: str, file_name: str):
         print(f"Unknown search function: {search_function}. Please choose 'HT' or 'BST'.")
 
 if __name__ == "__main__":
-    search_function = 'HT' # Options: 'HT' or 'BST'
-    hash_func_key='MMH3' # Options: 'MMH3' or 'FNV1A or N/A for BST'
-    file_name = "performance_results_ht_mmh3.csv"
+    search_function = 'BST' # Options: 'HT' or 'BST'
+    hash_func_key='N/A' # Options: 'MMH3' or 'FNV1A or N/A for BST'
+    file_name = "performance_results_bst.csv"
     main(search_function, hash_func_key, file_name)
 
 
