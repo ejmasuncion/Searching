@@ -88,9 +88,6 @@ def save_results_to_csv(csv_data: str, file_name: str):
                 print("Filename cannot be empty. Please try again.")
                 continue
 
-            if not filename.lower().endswith(".csv"):
-                filename += ".csv"
-
             with open(filename, 'w') as f:
                 f.write(csv_data)
             
@@ -98,7 +95,7 @@ def save_results_to_csv(csv_data: str, file_name: str):
             break
             
         except Exception as e:
-            print(f"❌ Error writing file: {e}. Please try a different filename or location.")
+            print(f"Error writing file.")
 
 def main(search_function: str, hash_func_key: str, file_name: str):
     TEST_SEQUENCE_LENGTHS = [10000, 100000, 1000000]
