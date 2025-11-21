@@ -49,26 +49,23 @@ class HashTable:
     def _collision(self, chain: list, key: str, value: int) -> bool:
         ## seperate chaining collision resolution
 
-        comparisons_made = 0
         for i, (k, v) in enumerate(chain):
-            comparisons_made += 1
             if k == key:
-                self.collision_count += comparisons_made
                 chain[i] = (key, value)
                 return True
         
-        self.collision_count += comparisons_made
         return False
     
     def insert(self, key: str, value: int):
         index = self._hash_function(key)
         chain = self.table[index]
         
-        print(f"Inserting key: '{key}' with value: {value} at index: {index}")
+        # print(f"Inserting key: '{key}' with value: {value} at index: {index}")
         was_updated = self._collision(chain, key, value)
 
         if not was_updated:
-            print("Collision! inserting new key-value pair into hash table.")
+            self.collision_count += 1
+            # print("Collision! inserting new key-value pair into hash table.")
             chain.append((key, value))
         
     def search(self, key: str):

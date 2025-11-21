@@ -91,7 +91,7 @@ def save_results_to_csv(csv_data: str, file_name: str):
             with open(filename, 'w') as f:
                 f.write(csv_data)
             
-            print(f"\n✅ Success! Performance data saved to: {filename}")
+            print(f"\nSuccess! Performance data saved to: {filename}")
             break
             
         except Exception as e:
@@ -117,9 +117,9 @@ def main(search_function: str, hash_func_key: str, file_name: str):
         print(f"Unknown search function: {search_function}. Please choose 'HT' or 'BST'.")
 
 if __name__ == "__main__":
-    search_function = 'BST' # Options: 'HT' or 'BST'
-    hash_func_key='N/A' # Options: 'MMH3' or 'FNV1A or N/A for BST'
-    file_name = "performance_results_bst.csv"
+    search_function = 'HT' # Options: 'HT' or 'BST'
+    hash_func_key='MMH3' # Options: 'MMH3' or 'FNV1A or N/A for BST'
+    file_name = "performance_results_ht_mmh3.csv"
     main(search_function, hash_func_key, file_name)
 
 
