@@ -19,10 +19,6 @@ def run_performance_test_bst(sequence_lengths: list, k_values: list):
         dna_sequence = generate_random_dna(n)
         
         for k in k_values:
-            if k >= n:
-                print(f"Skipping n={n}, k={k} (k must be less than n)")
-                continue
-            
             start_time_insert = time.time()
             
             distribution_table = search.compute_kmer_distribution_bst(dna_sequence, k)
@@ -63,10 +59,6 @@ def run_performance_test_ht(sequence_lengths: list, k_values: list, hash_func_ke
         dna_sequence = generate_random_dna(n)
 
         for k in k_values:
-            if k >= n:
-                print(f"Skipping n={n}, k={k} (k must be less than n)")
-                continue
-            
             start_time_insert = time.time()
             
             distribution_table = search.compute_kmer_distribution_ht(dna_sequence, k, hash_func_key)
@@ -97,23 +89,19 @@ def run_performance_test_ht(sequence_lengths: list, k_values: list, hash_func_ke
 
 def save_results_to_csv(csv_data: str, file_name: str):
     while True:
-        try:
-            filename = file_name
+        filename = file_name
 
-            with open(filename, 'w') as f:
-                f.write(csv_data)
-            
-            print(f"\nSuccess! Performance data saved to: {filename}")
-            break
-            
-        except Exception as e:
-            print(f"Error writing file.")
+        with open(filename, 'w') as f:
+            f.write(csv_data)
+        
+        print(f"\nSuccess!")
+        break
 
 def main(search_function: str, hash_func_key: str, file_name: str):
     TEST_SEQUENCE_LENGTHS = [10000, 100000, 1000000]
     TEST_K_VALUES = [5, 6, 7]
 
-    print(f"DNA String (n={len(TEST_K_VALUES)}): {TEST_K_VALUES}")
+    print(f"DNA String: {TEST_SEQUENCE_LENGTHS}")
     print(f"k-mer size: {TEST_K_VALUES}")
 
     if search_function == 'HT':
@@ -129,9 +117,9 @@ def main(search_function: str, hash_func_key: str, file_name: str):
         print(f"Unknown search function: {search_function}. Please choose 'HT' or 'BST'.")
 
 if __name__ == "__main__":
-    search_function = 'BST' # Options: 'HT' or 'BST'
-    hash_func_key='N/A' # Options: 'MMH3' or 'FNV1A or N/A for BST'
-    file_name = "performance_results_bst.csv"
+    search_function = 'HT' # Options: 'HT' or 'BST'
+    hash_func_key='MMH3' # Options: 'MMH3' or 'FNV1A or N/A for BST'
+    file_name = "performance_results_ht_mmh3.csv"
     main(search_function, hash_func_key, file_name)
 
 

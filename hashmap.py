@@ -9,17 +9,6 @@ class HashTable:
             self.table.append([])
         
         self.collision_count = 0
-
-    def __repr__(self) -> str:
-        output = f"<{self.__class__.__name__} Capacity={self.capacity} Algorithm={self.hash_function}>\n"
-        output += "--- Hash Table Array Structure (Index : Chain) ---\n"
-        
-        for i, chain in enumerate(self.table):
-            chain_str = ", ".join([f"('{k}': {v})" for k, v in chain])
-            
-            output += f"[{i:02d}]: [{chain_str}]\n"
-            
-        return output
     
     def _hash_function(self, key: str) -> int:
         if self.hash_function == 'MMH3':
@@ -50,6 +39,8 @@ class HashTable:
         ## seperate chaining collision resolution
 
         for i, (k, v) in enumerate(chain):
+            if i > 0: 
+                self.collision_count += 1
             if k == key:
                 chain[i] = (key, value)
                 return True
@@ -64,7 +55,6 @@ class HashTable:
         was_updated = self._collision(chain, key, value)
 
         if not was_updated:
-            self.collision_count += 1
             # print("Collision! inserting new key-value pair into hash table.")
             chain.append((key, value))
         
@@ -78,7 +68,7 @@ class HashTable:
         
         return 0
     
-    def items(self):
+    def print_items(self):
         # To generate all key-value pairs in the hash table
         for chain in self.table:
             for key, value in chain:
